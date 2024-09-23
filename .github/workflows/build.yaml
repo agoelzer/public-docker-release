@@ -2,14 +2,10 @@ name: Build
 on:
   push:
     branches:
-      - "master"
+      - "**"
 jobs:
   build_docker_images:
-    # permissions:
-    #   contents: write
-    # Job name that shows in the GitHub UI
     name: Build Docker Images
-    # Runner to use
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -25,7 +21,22 @@ jobs:
       - name: Build and push the Docker image
         run: |-
           docker build -t ghcr.io/agolzer/public-docker-release .
-          docker push ghcr.io/agolzer/public-docker-release:latest
+          if [ "${BRANCH_NAME}" == "master" ] ;
+            export TAG=$(grep '^appVersion:' ./charts/public-docker-release/Chart.yaml | tail -n1 | awk '{ print $2}')
+            docker tag ${DOCKER_REPO} ${DOCKER_REPO}:$TAG
+            docker push ${DOCKER_REPO}:${TAG}
+            docker push ${DOCKER_REPO}:latest
+          else
+            docker push ${DOCKER_REPO}:${BRANCH_NAME}
+          fi
+        env:
+          BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+          DOCKER_REPO: ghcr.io/agolzer/public-docker-release
+  publish_helm_chart:
+    name: Publish Helm Chart
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
       - name: Configure Git
         run: |
           git config user.name "$GITHUB_ACTOR"
