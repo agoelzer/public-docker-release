@@ -20,7 +20,7 @@ jobs:
         run: |-
           docker build -t ghcr.io/agolzer/public-docker-release .
           if [ "${BRANCH_NAME}" == "master" ] ; then
-            export TAG=$(grep '^appVersion:' ./charts/public-docker-release/Chart.yaml | tail -n1 | awk '{ print $2}')
+            export TAG=$(grep '^appVersion:' ./charts/public-docker-release/Chart.yaml | tail -n1 | awk '{ print $2}' | tr -d '"')
             docker tag ${DOCKER_REPO} ${DOCKER_REPO}:$TAG
             docker push ${DOCKER_REPO}:${TAG}
             docker push ${DOCKER_REPO}:latest
