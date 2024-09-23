@@ -5,6 +5,8 @@ on:
       - "master"
 jobs:
   build_docker_images:
+    permissions:
+      contents: write
     # Job name that shows in the GitHub UI
     name: Build Docker Images
     # Runner to use
@@ -24,6 +26,10 @@ jobs:
         run: |-
           docker build -t ghcr.io/agolzer/public-docker-release .
           docker push ghcr.io/agolzer/public-docker-release:latest
+      - name: Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
       - name: Install Helm
         uses: azure/setup-helm@v4
         env:
@@ -31,7 +37,7 @@ jobs:
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.6.0
         with:
-          charts_dir: charts
+          skip_existing: true
           packages_with_index: true
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
