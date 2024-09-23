@@ -25,6 +25,7 @@ jobs:
             docker push ${DOCKER_REPO}:${TAG}
             docker push ${DOCKER_REPO}:latest
           else
+            docker tag ${DOCKER_REPO} ${DOCKER_REPO}:${BRANCH_NAME}
             docker push ${DOCKER_REPO}:${BRANCH_NAME}
           fi
         env:
