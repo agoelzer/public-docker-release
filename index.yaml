@@ -3,6 +3,16 @@ entries:
   public-docker-release:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2024-09-23T15:07:17.040796658Z"
+    description: A Helm chart for Kubernetes
+    digest: 6a7eaf213233f986bd382b475450ba15c4ceaae64e70126edbb12d55438841b2
+    name: public-docker-release
+    type: application
+    urls:
+    - public-docker-release-0.1.5.tgz
+    version: 0.1.5
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2024-09-23T14:26:59.939381246Z"
     description: A Helm chart for Kubernetes
     digest: 99998ba6a79bc81a48a0162c55e422e2058f5dcd0095fab82306033e0a8c4d09
@@ -11,4 +21,4 @@ entries:
     urls:
     - public-docker-release-0.1.4.tgz
     version: 0.1.4
-generated: "2024-09-23T14:26:59.939390754Z"
+generated: "2024-09-23T15:07:17.040805024Z"
