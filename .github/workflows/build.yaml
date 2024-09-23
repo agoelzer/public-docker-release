@@ -5,8 +5,8 @@ on:
       - "master"
 jobs:
   build_docker_images:
-    permissions:
-      contents: write
+    # permissions:
+    #   contents: write
     # Job name that shows in the GitHub UI
     name: Build Docker Images
     # Runner to use
