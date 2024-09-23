@@ -1,0 +1,18 @@
+name: Build
+on:
+  push:
+    branches:
+      - "master"
+jobs:
+  build_docker_images:
+    # Job name that shows in the GitHub UI
+    name: Build Docker Images
+    # Runner to use
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Build the Docker image
+        run: |-
+          docker build -t ghcr.io/agolzer/public-docker-release .
+          docker push ghcr.io/agolzer/public-docker-release:latest
