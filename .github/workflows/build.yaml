@@ -10,8 +10,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - name: "Login to GitHub Container Registry"
         uses: docker/login-action@v3
         with:
@@ -21,7 +19,7 @@ jobs:
       - name: Build and push the Docker image
         run: |-
           docker build -t ghcr.io/agolzer/public-docker-release .
-          if [ "${BRANCH_NAME}" == "master" ] ;
+          if [ "${BRANCH_NAME}" == "master" ] ; then
             export TAG=$(grep '^appVersion:' ./charts/public-docker-release/Chart.yaml | tail -n1 | awk '{ print $2}')
             docker tag ${DOCKER_REPO} ${DOCKER_REPO}:$TAG
             docker push ${DOCKER_REPO}:${TAG}
@@ -37,6 +35,10 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Configure Git
         run: |
           git config user.name "$GITHUB_ACTOR"
